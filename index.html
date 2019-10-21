@@ -13,12 +13,30 @@
 <body>
     <ion-aap>
         <ion-header>
-            <ion-toolbar>
-                <ion-title>Budget Planner</ion-title>
+            <ion-toolbar color="primary">
+                <ion-title >Budget Planner</ion-title>
             </ion-toolbar>
         </ion-header>
         <ion-content>
-
+            <ion-gri>
+              <ion-row>
+                  <ion-col size-md="6">
+                      <ion-card-content>
+                          <ion-card-title>New Expense</ion-card-title>
+                          <ion-item>
+                              <ion-label position="floating">Expense reason</ion-label>
+                              <ion-input type="text"></ion-input>
+                          </ion-item>
+                          <ion-item>
+                              <ion-label position="floating">Expense amount</ion-label>
+                              <ion-input type="number"></ion-input>
+                          </ion-item>
+                      </ion-card-content>
+                      </ion-card>
+                  </ion-col>
+              </ion-row>
+            </ion-gri>
+            <ion-card>
         </ion-content>
     </ion-aap>
 </body>
