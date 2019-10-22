@@ -6,6 +6,11 @@ const expensesList = document.querySelector('#expenses-list');
 
 let list = [];
 
+const clear = () =>{
+  reasonInput.value = '';
+  amount.value = '';
+};
+
 confirmBtn.addEventListener('click', () =>{
     const enteredReason = reasonInput.value;
     const enterendAmount = amount.value;
@@ -13,7 +18,11 @@ confirmBtn.addEventListener('click', () =>{
     if (enteredReason.trim().length <=0 || enterendAmount <=0 || enterendAmount.trim().length <=0){
         return;
     }
+    clear();
     const newItem = document.createElement('ion-item');
     newItem.textContent = enteredReason + ': £' + enterendAmount;
     expensesList.appendChild(newItem);
+
 });
+
+cancelBtn.addEventListener('click', clear);
