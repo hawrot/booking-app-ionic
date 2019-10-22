@@ -25,15 +25,15 @@
                           <ion-card-title>New Expense</ion-card-title>
                           <ion-item>
                               <ion-label position="floating">Expense reason</ion-label>
-                              <ion-input type="text"></ion-input>
+                              <ion-input type="text" id="input-reason"></ion-input>
                           </ion-item>
                           <ion-item>
                               <ion-label position="floating">Expense amount</ion-label>
-                              <ion-input type="number"></ion-input>
+                              <ion-input type="number" id="input-amount"></ion-input>
                           </ion-item>
                           <div margin-vertical text-right>
-                              <ion-button><ion-icon name="add" slot="start"></ion-icon>Add Expense</ion-button>
-                              <ion-button fill="outline" color="danger"><ion-icon slot="start" name="close"></ion-icon>Clear</ion-button>
+                              <ion-button id="btn-add-expense"><ion-icon name="add" slot="start"></ion-icon>Add Expense</ion-button>
+                              <ion-button id="btn-clear" fill="outline" color="danger"><ion-icon slot="start" name="close"></ion-icon>Clear</ion-button>
                           </div>
                       </ion-card-content>
                       </ion-card>
