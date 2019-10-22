@@ -3,6 +3,8 @@ const amount = document.querySelector('#input-amount');
 const cancelBtn = document.querySelector('#btn-clear');
 const confirmBtn = document.querySelector('#btn-add-expense');
 
+let list = [];
+
 confirmBtn.addEventListener('click', () =>{
     const enteredReason = reasonInput.value;
     const enterendAmount = amount.value;
@@ -11,4 +13,6 @@ confirmBtn.addEventListener('click', () =>{
         return;
     }
     console.log(enteredReason, '£', enterendAmount);
+    list.push({value: enteredReason, amount: enterendAmount});
+    console.log(list);
 });
