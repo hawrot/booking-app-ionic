@@ -7,14 +7,7 @@ import {Recipe} from './recipe.model';
   styleUrls: ['./recipes.page.scss'],
 })
 export class RecipesPage implements OnInit {
-  recipes: Recipe[] = [
-      {
-        id: 'rl1',
-          title: 'Pizza',
-          image: 'https://media-cdn.tripadvisor.com/media/photo-s/15/c5/a4/14/pepperoni-lovers.jpg',
-          ingredients: ['ham', 'tomato', 'mushrooms']
-      }
-  ];
+
   constructor() { }
 
   ngOnInit() {
