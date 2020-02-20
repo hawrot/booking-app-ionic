@@ -26,7 +26,7 @@ const routers: Routes = [
                     children: [
                         {
                             path: '',
-                            loadChildren: './offers.offers.module#OffersPageModule'
+                            loadChildren: './offers/offers.module#OffersPageModule'
                         },
                         {
                             path: 'new',
@@ -41,13 +41,23 @@ const routers: Routes = [
                             loadChildren: './offers/offer-booking/offer-bookings.module#OfferBookingsPageModule'
                         }
                     ]
+                },
+                {
+                    path: '',
+                    redirectTo: '/places/tabs/discover',
+                    pathMatch: 'full'
                 }
             ]
+    },
+    {
+        path: '',
+        redirectTo: '/places/tabs/discover',
+        pathMatch: 'full'
     }
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild()],
+    imports: [RouterModule.forChild(routers)],
     exports: [RouterModule]
 })
 export class PlacesRoutingModule {
