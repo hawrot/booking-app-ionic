@@ -19,6 +19,16 @@
           <ion-card-content>
             <p>{{ loadedPlaces[0].description }}</p>
           </ion-card-content>
+          <div text-right padding>
+            <ion-button fill="clear" color="primary" [routerLink]="[
+            '/',
+            'places',
+            'tabs',
+            'discover',
+            loadedPlaces[0].id
+            ]"
+            >More</ion-button>
+          </div>
         </ion-card>
       </ion-col>
     </ion-row>
