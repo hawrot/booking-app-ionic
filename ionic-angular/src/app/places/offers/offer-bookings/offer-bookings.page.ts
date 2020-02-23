@@ -17,7 +17,7 @@ place: Place;
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap =>{
       if (!paramMap.has('placeId')){
-        this.navCtrl.navigateBack('/places/tabs/iffers');
+        this.navCtrl.navigateBack('/places/tabs/offers');
         return;
       }
       this.place = this.placesService.getPlace(paramMap.get('placeId'));
