@@ -17,4 +17,8 @@ export class DiscoverPage implements OnInit {
     this.loadedPlaces = this.placesService.places;
   }
 
+  onEdit(offerId : string){
+    console.log('Editing: ' +  offerId);
+  }
+
 }
