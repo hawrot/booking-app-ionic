@@ -8,5 +8,22 @@
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-sm="8" size-md="6" offset-md="3" offset-sm="2">
+        <ion-list>
+          <ion-item-sliding *ngFor="let booking of loadedBookings">
+            <ion-item>
+              <ion-label>
+                <h5>{{booking.placeTitle}}</h5>
+                <p>Guests: {{booking.guestNumber}}</p>
+              </ion-label>
+            </ion-item>
+          </ion-item-sliding>
+
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
