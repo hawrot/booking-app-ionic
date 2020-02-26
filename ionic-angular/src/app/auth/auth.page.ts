@@ -3,6 +3,7 @@ import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
 import {LoadingController} from '@ionic/angular';
 import {tokenReference} from '@angular/compiler';
+import {NgForm} from '@angular/forms';
 
 @Component({
     selector: 'app-auth',
@@ -30,8 +31,9 @@ export class AuthPage implements OnInit {
                 this.router.navigateByUrl('/places/tabs/discover');
             }, 1500)
         });
+    }
 
-
-
+    onSubmit(form: NgForm){
+        console.log(form);
     }
 }
