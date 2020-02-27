@@ -8,7 +8,8 @@ import {ModalController} from '@ionic/angular';
   styleUrls: ['./create-booking.component.scss'],
 })
 export class CreateBookingComponent implements OnInit {
-@Input() selectedPlace: Place
+@Input() selectedPlace: Place;
+
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {}
