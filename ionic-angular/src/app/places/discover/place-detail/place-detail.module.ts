@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
 import { PlaceDetailPage } from './place-detail.page';
 import {CreateBookingComponent} from '../../../bookings/create-booking/create-booking.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -18,7 +19,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
