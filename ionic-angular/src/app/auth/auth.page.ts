@@ -35,7 +35,18 @@ export class AuthPage implements OnInit {
     }
 
     onSubmit(form: NgForm){
-        console.log(form);
+        if(!form.valid){
+            return;
+        }
+        const email = form.value.email;
+        const password = form.value.password;
+
+        if(this.isLogin){
+            //Send a request to login servers
+
+        }else{
+            //Send a request to signup servers
+        }
     }
 
     onSwitchAuthMode(){
