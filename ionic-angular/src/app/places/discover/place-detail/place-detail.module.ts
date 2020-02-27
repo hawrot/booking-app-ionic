@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { PlaceDetailPage } from './place-detail.page';
 import {CreateBookingComponent} from '../../../bookings/create-booking/create-booking.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -17,12 +17,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    IonicModule,
-    RouterModule.forChild(routes)
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        IonicModule,
+        RouterModule.forChild(routes),
+        FormsModule
+    ],
   declarations: [PlaceDetailPage, CreateBookingComponent],
   entryComponents: [CreateBookingComponent]
 })

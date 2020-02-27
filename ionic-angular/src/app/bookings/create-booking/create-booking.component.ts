@@ -13,7 +13,7 @@ export class CreateBookingComponent implements OnInit {
 
   ngOnInit() {}
 
-  onBook(){
+  onBookPlace(){
   this.modalController.dismiss({message: 'Booked! '}, 'confirm');
   }
 
