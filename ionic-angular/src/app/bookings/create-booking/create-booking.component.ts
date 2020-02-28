@@ -11,6 +11,7 @@ import {NgForm} from '@angular/forms';
 export class CreateBookingComponent implements OnInit {
     @Input() selectedPlace: Place;
     @Input() selectedMode: 'select' | 'random';
+    // @ts-ignore
     @ViewChild('form') form: NgForm;
     startDate: string;
     endDate: string;
