@@ -17,7 +17,7 @@ export class BookingsPage implements OnInit, OnDestroy {
   constructor(private bookingService: BookingService) {}
 
   ngOnInit() {
-    this.bookingService.bookings.subscribe(bookings => {
+   this.bookingSub = this.bookingService.bookings.subscribe(bookings => {
       this.loadedBookings = bookings;
     });
   }
