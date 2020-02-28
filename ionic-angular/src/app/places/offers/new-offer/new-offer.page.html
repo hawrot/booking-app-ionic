@@ -31,7 +31,7 @@
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="form.get('description').valid && form.get('description').touched">
+    <ion-row *ngIf="!form.get('description').valid && form.get('description').touched">
       <ion-col size-sm="6" offset-sm="3">
         <p>Description must not be longer that 180 characters.</p>
       </ion-col>
@@ -44,7 +44,7 @@
         </ion-item>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="form.get('price').valid && form.get('price').touched">
+    <ion-row *ngIf="!form.get('price').valid && form.get('price').touched">
       <ion-col size-sm="6" offset-sm="3">
         <p>Price must be assigned.</p>
       </ion-col>
