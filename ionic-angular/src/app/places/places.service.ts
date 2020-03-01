@@ -3,7 +3,8 @@ import {Injectable} from '@angular/core';
 import {Place} from './place.model';
 import {AuthService} from '../auth/auth.service';
 import {BehaviorSubject} from 'rxjs';
-import {delay, map, take, tap} from 'rxjs/operators';
+import {delay, map, switchMap, take, tap} from 'rxjs/operators';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
@@ -48,7 +49,7 @@ export class PlacesService {
         return this._places.asObservable();
     }
 
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService, private  http: HttpClient) {
     }
 
     getPlaces(id: string) {
@@ -65,6 +66,7 @@ export class PlacesService {
     }
 
     addPlace(title: string, description: string, price: number, availableFrom: Date, availableTo: Date) {
+        let generatedId : string;
         const newPlace = new Place(
             Math.random().toString(),
             title,
@@ -75,16 +77,29 @@ export class PlacesService {
             availableTo,
             this.authService.userId
         );
-        //this._places.push(newPlace);
+        return this.http.post<{name: string}>('https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json', {
+            ...newPlace,
+            id: null
+        }).pipe(switchMap(resData =>{
+            generatedId = resData.name;
+            return this.places;
+        }),
+            take(1),
+            tap(places =>{
+                newPlace.id = generatedId;
+                this._places.next(places.concat(newPlace));
+            })
+        );
 
-        //Method below takes one object from the subscription
+
+        /*//Method below takes one object from the subscription
         return this.places.pipe(take(1), tap(places => {
             this._places.next(places.concat(newPlace));
-        }))
+        }))*/
     }
 
     updatePlace(placeId: string, title: string, description: string) {
-      return this.places.pipe(take(1), tap(places => {
+        return this.places.pipe(take(1), tap(places => {
             const updatedPlaceIndex = places.findIndex(pl => pl.id === placeId);
             const updatedPlaces = [...places];
             const oldPlace = updatedPlaces[updatedPlaceIndex];
