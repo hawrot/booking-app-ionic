@@ -6,42 +6,22 @@ import {BehaviorSubject} from 'rxjs';
 import {delay, map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 
+interface PlaceData {
+    availableFrom: string;
+    availableTo: string;
+    description: string;
+    imageUrl: string;
+    price: number;
+    title: string;
+    userId: string;
+
+}
+
 @Injectable({
     providedIn: 'root'
 })
 export class PlacesService {
-    private _places = new BehaviorSubject<Place[]>([
-        new Place(
-            'p1',
-            'Manhattan Mansion',
-            'In the heart of New York City.',
-            'https://lonelyplanetimages.imgix.net/mastheads/GettyImages-538096543_medium.jpg?sharp=10&vib=20&w=1200',
-            149.99,
-            new Date('2020-01-01'),
-            new Date('2020-12-31'),
-            'abc'
-        ),
-        new Place(
-            'p2',
-            'L\'Amour Toujours',
-            'A romantic place in Paris!',
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Paris_Night.jpg/1024px-Paris_Night.jpg',
-            189.99,
-            new Date('2020-01-01'),
-            new Date('2020-12-31'),
-            'abc'
-        ),
-        new Place(
-            'p3',
-            'The Foggy Palace',
-            'Not your average city trip!',
-            'https://upload.wikimedia.org/wikipedia/commons/0/01/San_Francisco_with_two_bridges_and_the_fog.jpg',
-            99.99,
-            new Date('2020-01-01'),
-            new Date('2020-12-31'),
-            'abc'
-        )
-    ]);
+    private _places = new BehaviorSubject<Place[]>([]);
 
 
     get places() {
@@ -65,8 +45,34 @@ export class PlacesService {
         }));
     }
 
+    fetchPlaces() {
+        return this.http.get<{ [key: string]: PlaceData }>('https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json')
+            .pipe(map(resData => {
+                const places = [];
+                for (const key in resData) {
+                    if (resData.hasOwnProperty(key)) {
+                        places.push(new Place(
+                            key, resData[key].title,
+                            resData[key].description,
+                            resData[key].imageUrl,
+                            resData[key].price,
+                            new Date(resData[key].availableFrom),
+                            new Date(resData[key].availableTo),
+                            resData[key].userId
+                            )
+                        );
+                    }
+                }
+                return places;
+            }),
+                tap(places =>{
+                    this._places.next(places);
+                })
+            )
+    }
+
     addPlace(title: string, description: string, price: number, availableFrom: Date, availableTo: Date) {
-        let generatedId : string;
+        let generatedId: string;
         const newPlace = new Place(
             Math.random().toString(),
             title,
@@ -77,15 +83,15 @@ export class PlacesService {
             availableTo,
             this.authService.userId
         );
-        return this.http.post<{name: string}>('https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json', {
+        return this.http.post<{ name: string }>('https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json', {
             ...newPlace,
             id: null
-        }).pipe(switchMap(resData =>{
-            generatedId = resData.name;
-            return this.places;
-        }),
+        }).pipe(switchMap(resData => {
+                generatedId = resData.name;
+                return this.places;
+            }),
             take(1),
-            tap(places =>{
+            tap(places => {
                 newPlace.id = generatedId;
                 this._places.next(places.concat(newPlace));
             })
