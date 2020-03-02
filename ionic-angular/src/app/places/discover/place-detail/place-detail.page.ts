@@ -18,6 +18,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     place: Place;
     private placeSub: Subscription;
     isBookable = false;
+    isLoading = false;
 
     constructor(private router: Router,
                 private navCtrl: NavController,
@@ -38,10 +39,11 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
                 this.navCtrl.navigateBack('/places/tabs/discover');
                 return;
             }
-            // this.place = this.placesService.getPlace(paramMap.get('placeId'));
+           this.isLoading = true;
             this.placeSub = this.placesService.getPlace(paramMap.get('placeId')).subscribe(place => {
                 this.place = place;
                 this.isBookable = place.userId !== this.authService.userId;
+                this.isLoading = false;
             })
         })
     }
