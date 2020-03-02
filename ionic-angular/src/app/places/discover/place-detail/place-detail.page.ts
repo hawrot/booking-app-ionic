@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ActionSheetController, LoadingController, ModalController, NavController} from '@ionic/angular';
+import {ActionSheetController, AlertController, LoadingController, ModalController, NavController} from '@ionic/angular';
 import {PlacesService} from '../../places.service';
 import {Place} from '../../place.model';
 import {CreateBookingComponent} from '../../../bookings/create-booking/create-booking.component';
@@ -28,7 +28,8 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
                 private actionSheetController: ActionSheetController,
                 private bookingService: BookingService,
                 private loadingController: LoadingController,
-                private authService: AuthService
+                private authService: AuthService,
+                private alertCtrl: AlertController,
 
     ) {
     }
@@ -44,6 +45,14 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
                 this.place = place;
                 this.isBookable = place.userId !== this.authService.userId;
                 this.isLoading = false;
+            }, error => {
+                this.alertCtrl.create({header: 'An error occurred!', message: 'Could not load the place', buttons: [
+                        {
+                            text: 'Okay',
+                            handler: ()=>{this.router.navigate(['/places/tabs/discover'])}
+                        }
+                    ]})
+                    .then(alertEl => alertEl.present());
             })
         })
     }
