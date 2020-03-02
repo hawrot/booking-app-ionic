@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {ModalController} from '@ionic/angular';
 
 @Component({
@@ -10,7 +10,7 @@ export class MapModalComponent implements OnInit, AfterViewInit {
   // @ts-ignore
   @ViewChild('map') mapsElementRef: ElementRef;
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController, private renderer: Renderer2) { }
 
   ngOnInit() {}
 
@@ -25,6 +25,9 @@ export class MapModalComponent implements OnInit, AfterViewInit {
         center: {lat: -34.397, lng: 150.644},
         zoom: 16
       });
+      googleMaps.event.addListenerOnce(map, 'idle', ()=>{
+        this.renderer.addClass(mapEl, 'visible')
+      })
     }).catch(err =>{console.log(err)});
   }
 
@@ -36,7 +39,7 @@ export class MapModalComponent implements OnInit, AfterViewInit {
     }
     return new Promise((resolve, reject)=>{
       const script = document.createElement('script');
-      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAXPs1BkCAp-uWQ0Z8gYbx6jUF-wXYjvJE';
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCTvRcg7sPhUZMrKUT6UHRZkAfdnzvPI60';
       script.async = true;
       script.defer = true;
       document.body.appendChild(script);
