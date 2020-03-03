@@ -148,10 +148,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
             .create({
                 component: MapModalComponent,
                 componentProps: {
-                    center: {
-                        lat: this.place.location.lat,
-                        lng: this.place.location.lng
-                    },
+                    center: {lat: this.place.location.lat, lng: this.place.location.lng},
                     selectable: false,
                     closeButtonText: 'Close',
                     title: this.place.location.address
