@@ -1,4 +1,4 @@
-import {PlaceLocation} from './location.model';
+import { PlaceLocation } from './location.model';
 
 export class Place {
     constructor(
@@ -7,10 +7,9 @@ export class Place {
         public description: string,
         public imageUrl: string,
         public price: number,
-        public availableFrom:  Date,
+        public availableFrom: Date,
         public availableTo: Date,
         public userId: string,
         public location: PlaceLocation
-) {
-}
+    ) {}
 }
