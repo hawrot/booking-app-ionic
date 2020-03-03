@@ -5,6 +5,7 @@ import {AuthService} from '../auth/auth.service';
 import {BehaviorSubject, of} from 'rxjs';
 import {delay, map, switchMap, take, tap} from 'rxjs/operators';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {PlaceLocation} from './location.model';
 
 interface PlaceData {
     availableFrom: string;
@@ -14,6 +15,7 @@ interface PlaceData {
     price: number;
     title: string;
     userId: string;
+    location: PlaceLocation;
 
 }
 
@@ -41,7 +43,7 @@ export class PlacesService {
         //  return {...this._places.find(p => p.id === id)};
 
         return this.http.get<PlaceData>(`https://ionic-angular-course-f44b5.firebaseio.com/offered-places/${id}.json`).pipe(map(placeData =>{
-            return new Place(id, placeData.title, placeData.description, placeData.imageUrl, placeData.price, new Date(placeData.availableFrom), new Date(placeData.availableTo), placeData.userId);
+            return new Place(id, placeData.title, placeData.description, placeData.imageUrl, placeData.price, new Date(placeData.availableFrom), new Date(placeData.availableTo), placeData.userId, placeData.location);
         })
         );
     };
@@ -59,7 +61,8 @@ export class PlacesService {
                                 resData[key].price,
                                 new Date(resData[key].availableFrom),
                                 new Date(resData[key].availableTo),
-                                resData[key].userId
+                                resData[key].userId,
+                                resData[key].location
                                 )
                             );
                         }
@@ -72,7 +75,7 @@ export class PlacesService {
             )
     }
 
-    addPlace(title: string, description: string, price: number, availableFrom: Date, availableTo: Date) {
+    addPlace(title: string, description: string, price: number, availableFrom: Date, availableTo: Date, location: PlaceLocation) {
         let generatedId: string;
         const newPlace = new Place(
             Math.random().toString(),
@@ -82,7 +85,9 @@ export class PlacesService {
             price,
             availableFrom,
             availableTo,
-            this.authService.userId
+            this.authService.userId,
+            location
+
         );
         return this.http.post<{ name: string }>('https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json', {
             ...newPlace,
@@ -119,7 +124,7 @@ export class PlacesService {
                 const updatedPlaceIndex = places.findIndex(pl => pl.id === placeId);
                 updatedPlaces = [...places];
                 const oldPlace = updatedPlaces[updatedPlaceIndex];
-                updatedPlaces[updatedPlaceIndex] = new Place(oldPlace.id, title, description, oldPlace.imageUrl, oldPlace.price, oldPlace.availableFrom, oldPlace.availableTo, oldPlace.userId);
+                updatedPlaces[updatedPlaceIndex] = new Place(oldPlace.id, title, description, oldPlace.imageUrl, oldPlace.price, oldPlace.availableFrom, oldPlace.availableTo, oldPlace.userId, oldPlace.location);
                 this._places.next(updatedPlaces);
                 return this.http.put(`https://ionic-angular-course-f44b5.firebaseio.com/offered-places/${placeId}.json`,
                     {...updatedPlaces[updatedPlaceIndex], id: null}
