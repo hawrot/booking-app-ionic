@@ -1,12 +1,13 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
-import { map, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import {ActionSheetController, AlertController, ModalController} from '@ionic/angular';
+import {HttpClient} from '@angular/common/http';
+import {map, switchMap} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {Plugins, Capacitor} from '@capacitor/core';
 
-import { MapModalComponent } from '../../map-modal/map-modal.component';
-import { environment } from '../../../../environments/environment';
-import { PlaceLocation } from '../../../places/location.model';
+import {MapModalComponent} from '../../map-modal/map-modal.component';
+import {environment} from '../../../../environments/environment';
+import {Coordinates, PlaceLocation} from '../../../places/location.model';
 
 @Component({
     selector: 'app-location-picker',
@@ -14,16 +15,39 @@ import { PlaceLocation } from '../../../places/location.model';
     styleUrls: ['./location-picker.component.scss']
 })
 export class LocationPickerComponent implements OnInit {
-   @Output() locationPick = new EventEmitter<PlaceLocation>();
+    @Output() locationPick = new EventEmitter<PlaceLocation>();
     selectedLocationImage: string;
     isLoading = false;
 
-    constructor(private modalCtrl: ModalController, private http: HttpClient) {}
+    constructor(private modalCtrl: ModalController, private http: HttpClient, private actionSheetCtrl: ActionSheetController, private alertController: AlertController) {
+    }
 
-    ngOnInit() {}
+    ngOnInit() {
+    }
 
     onPickLocation() {
-        this.modalCtrl.create({ component: MapModalComponent }).then(modalEl => {
+        this.actionSheetCtrl.create({
+            header: 'Place Choose', buttons: [
+                {
+                    text: 'Auto-Locate', handler: () => {
+                        this.locateUser()
+                    }
+                },
+                {
+                    text: 'Pick on Map', handler: () => {
+                        this.openMap()
+                    }
+                },
+                {text: 'Cancel', role: 'cancel'}
+            ]
+        }).then(actionSheetEl => {
+            actionSheetEl.present();
+        });
+
+    }
+
+    private openMap() {
+        this.modalCtrl.create({component: MapModalComponent}).then(modalEl => {
             modalEl.onDidDismiss().then(modalData => {
                 if (!modalData.data) {
                     return;
@@ -53,6 +77,20 @@ export class LocationPickerComponent implements OnInit {
             });
             modalEl.present();
         });
+    }
+
+    private locateUser() {
+        if (!Capacitor.isPluginAvailable('Geolocation')) {
+           this.showErrorAlert();
+            return;
+        }
+        Plugins.Geolocation.getCurrentPosition().then(geoPosition =>{
+            const coordinates: Coordinates = {lat: geoPosition.coords.latitude, lng: geoPosition.coords.longitude};
+        }).catch(err =>{this.showErrorAlert()})
+    }
+
+    private showErrorAlert(){
+        this.alertController.create({header: 'Could not access location', message: 'Use the map to pick the location'}).then(alertEl => alertEl.present());
     }
 
     private getAddress(lat: number, lng: number) {
