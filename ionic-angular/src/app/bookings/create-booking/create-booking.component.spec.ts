@@ -1,4 +1,3 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateBookingComponent } from './create-booking.component';
@@ -9,8 +8,7 @@ describe('CreateBookingComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateBookingComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [ CreateBookingComponent ]
     })
     .compileComponents();
   }));

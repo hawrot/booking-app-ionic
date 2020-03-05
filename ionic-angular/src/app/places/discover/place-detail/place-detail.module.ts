@@ -10,21 +10,21 @@ import { CreateBookingComponent } from '../../../bookings/create-booking/create-
 import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
-    {
-        path: '',
-        component: PlaceDetailPage
-    }
+  {
+    path: '',
+    component: PlaceDetailPage
+  }
 ];
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        RouterModule.forChild(routes),
-        SharedModule
-    ],
-    declarations: [PlaceDetailPage, CreateBookingComponent],
-    entryComponents: [CreateBookingComponent]
+  imports: [
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    RouterModule.forChild(routes),
+    SharedModule
+  ],
+  declarations: [PlaceDetailPage, CreateBookingComponent],
+  entryComponents: [CreateBookingComponent]
 })
 export class PlaceDetailPageModule {}

@@ -1,4 +1,3 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MapModalComponent } from './map-modal.component';
@@ -9,8 +8,7 @@ describe('MapModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MapModalComponent ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      declarations: [ MapModalComponent ]
     })
     .compileComponents();
   }));
