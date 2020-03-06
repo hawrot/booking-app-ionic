@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import {BehaviorSubject} from 'rxjs';
 
 export interface AuthResponseData {
   kind: string;
@@ -16,11 +17,11 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  private _userIsAuthenticated = false;
   private _userId = null;
+  private _token = new BehaviorSubject<string>();
 
   get userIsAuthenticated() {
-    return this._userIsAuthenticated;
+    return
   }
 
   get userId() {
