@@ -15,6 +15,7 @@ import { CreateBookingComponent } from '../../../bookings/create-booking/create-
 import { BookingService } from '../../../bookings/booking.service';
 import { AuthService } from '../../../auth/auth.service';
 import { MapModalComponent } from '../../../shared/map-modal/map-modal.component';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-place-detail',
@@ -25,6 +26,7 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
   place: Place;
   isBookable = false;
   isLoading = false;
+  fetchUserId : string;
   private placeSub: Subscription;
 
   constructor(
@@ -47,12 +49,18 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
         return;
       }
       this.isLoading = true;
-      this.placeSub = this.placesService
-        .getPlace(paramMap.get('placeId'))
+      this.authService.userId.pipe(switchMap(userId =>{
+        if(!userId){
+          throw new Error('No user id found!')
+        }
+        this.fetchUserId = userId;
+        return this.placesService
+            .getPlace(paramMap.get('placeId'))
+      }))
         .subscribe(
           place => {
             this.place = place;
-            this.isBookable = place.userId !== this.authService.userId;
+            this.isBookable = place.userId !== this.fetchUserId;
             this.isLoading = false;
           },
           error => {
