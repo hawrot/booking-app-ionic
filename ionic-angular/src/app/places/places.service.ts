@@ -130,35 +130,41 @@ export class PlacesService {
   }
 
   addPlace(
-    title: string,
-    description: string,
-    price: number,
-    dateFrom: Date,
-    dateTo: Date,
-    location: PlaceLocation,
-    imageUrl: string
+      title: string,
+      description: string,
+      price: number,
+      dateFrom: Date,
+      dateTo: Date,
+      location: PlaceLocation,
+      imageUrl: string
   ) {
     let generatedId: string;
-    const newPlace = new Place(
-      Math.random().toString(),
-      title,
-      description,
-      imageUrl,
-      price,
-      dateFrom,
-      dateTo,
-      this.authService.userId,
-      location
-    );
-    return this.http
-      .post<{ name: string }>(
-        'https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json',
-        {
-          ...newPlace,
-          id: null
-        }
-      )
-      .pipe(
+    let newPlace: Place;
+    return this.authService.userId.pipe(
+        take(1),
+        switchMap(userId => {
+          if (!userId) {
+            throw new Error('No user found!');
+          }
+          newPlace = new Place(
+              Math.random().toString(),
+              title,
+              description,
+              imageUrl,
+              price,
+              dateFrom,
+              dateTo,
+              userId,
+              location
+          );
+          return this.http.post<{ name: string }>(
+              'https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json',
+              {
+                ...newPlace,
+                id: null
+              }
+          );
+        }),
         switchMap(resData => {
           generatedId = resData.name;
           return this.places;
@@ -168,14 +174,15 @@ export class PlacesService {
           newPlace.id = generatedId;
           this._places.next(places.concat(newPlace));
         })
-      );
+    );
     // return this.places.pipe(
     //   take(1),
     //   delay(1000),
     //   tap(places => {
     //     this._places.next(places.concat(newPlace));
     //   })
-    // );
+    //
+    // )
   }
 
   updatePlace(placeId: string, title: string, description: string) {
