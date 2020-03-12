@@ -99,11 +99,12 @@ export class PlacesService {
   }
 
   getPlace(id: string) {
-    return this.http
-      .get<PlaceData>(
-          `https://ionic-angular-course-f44b5.firebaseio.com/offered-places/${id}.json`
-      )
-      .pipe(
+    return   this.authService.token.pipe(switchMap(token =>{
+          return this.http
+              .get<PlaceData>(
+                  `https://ionic-angular-course-f44b5.firebaseio.com/offered-places/${id}.json?auth=${token}`
+              )
+      }),
         map(placeData => {
           return new Place(
             id,
