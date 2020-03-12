@@ -64,11 +64,12 @@ export class PlacesService {
   constructor(private authService: AuthService, private http: HttpClient) {}
 
   fetchPlaces() {
-    return this.http
-      .get<{ [key: string]: PlaceData }>(
-        'https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json'
-      )
-      .pipe(
+     return  this.authService.token.pipe(switchMap(token =>{
+          return this.http
+              .get<{ [key: string]: PlaceData }>(
+                  `https://ionic-angular-course-f44b5.firebaseio.com/offered-places.json?auth=${token}`
+              )
+      }),
         map(resData => {
           const places = [];
           for (const key in resData) {
