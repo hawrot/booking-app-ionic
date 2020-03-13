@@ -10,7 +10,6 @@ import { Booking } from './booking.model';
   templateUrl: './bookings.page.html',
   styleUrls: ['./bookings.page.scss']
 })
-
 export class BookingsPage implements OnInit, OnDestroy {
   loadedBookings: Booking[];
   isLoading = false;

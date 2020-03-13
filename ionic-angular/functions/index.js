@@ -13,7 +13,9 @@ const storage = new Storage({
   projectId: 'ionic-angular-course-f44b5'
 });
 
-fbAdmin.initializeApp({credential: fbAdmin.credential.cert(require('./ionic-app.json'))});
+fbAdmin.initializeApp({
+  credential: fbAdmin.credential.cert(require('./ionic-app.json'))
+});
 
 exports.storeImage = functions.https.onRequest((req, res) => {
   return cors(req, res, () => {
@@ -21,11 +23,14 @@ exports.storeImage = functions.https.onRequest((req, res) => {
       return res.status(500).json({ message: 'Not allowed.' });
     }
 
-    if(!req.headers.authorization || !req.headers.startsWith('Bearer')){
-      return res.status(401).json({error: 'Unauthorized!'});
+    if (
+        !req.headers.authorization ||
+        !req.headers.authorization.startsWith('Bearer ')
+    ) {
+      return res.status(401).json({ error: 'Unauthorized!' });
     }
     let idToken;
-    idToken = req.headers.authorization.split('Bearer')[1];
+    idToken = req.headers.authorization.split('Bearer ')[1];
 
     const busboy = new Busboy({ headers: req.headers });
     let uploadData;
